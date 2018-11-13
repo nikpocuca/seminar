@@ -1,0 +1,46 @@
+
+\documentclass[12pt,letterpaper]{report}
+\usepackage[margin=0.90in]{geometry}
+\usepackage{amsmath, amssymb}
+\usepackage{times}
+\usepackage{fancyhdr}
+\pagestyle{fancy}
+\usepackage{natbib}
+\usepackage{titling}
+\usepackage{setspace}
+\usepackage{bm}
+\usepackage{xcolor}
+\usepackage{graphicx}
+%\setlength{\textfloatsep}{-1pt}
+\usepackage{sectsty}
+\usepackage{amsthm}
+\usepackage[utf8]{inputenc}
+\usepackage[english]{babel}
+ 
+
+\newcommand{\bigline}{\noindent\makebox[\linewidth]{\rule{18cm}{0.4pt}}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+ 
+\doublespace
+\begin{document}
+
+\author{Nik Po\v cu\v ca -  1322223}
+\title{Seminar Report - Fitting Mixture of Distributions with R package mixdist}
+\maketitle
+\section{Introduction}
+\subsection{Peter Macdonald}
+Dr. Peter Macdonald, professor emeritus from McMaster Unviersity dives into his lifetime research and life experiences working with finite mixture models in fishery-length frequency analysis. Dr. Macdonald served on numerous United States Environmental Protection Agency FIFRA Scientific Advisory Panels, reviewing methodology proposed by the EPA for pesticide risk assessment. Dr. Macdnolad presents the pike measurements taken in 1965 in that of Heming lake and demonstrates how mixture modelling can be used to track length of pike of fish. 
+\subsection{Finite Mixture Model}
+A finite mixture model is a model in which multiple distributions play a role on the sample sample space. These models often arise when sampling from heterogeneous populations with a specific probability density function on each partition, For example in frequency distributions of animal populations with various age-groups. A finite mixture has a finite number of groups contributing to the density that lives on sample space $\Omega$. 
+
+\begin{definition}{Finite mixture model}
+Suppose a random variable $\bm{X}$ takes on values in a sample space $\Omega$ in which it's distribution can be represented by a probability density function (continuous case) of the form 
+$$p(\bm{x} ; \bm{\theta}) = \sum_{k=1}^G \pi_k f_k(\bm{x}; \bm{\theta_k}).$$
+Here $\bm{x}$ are realizations of $\bm X$, $\pi_k$ is the mixing proportion of group $k$, where $0 \leq \pi_k \leq 1$, $k= 1, \dots, G$ and $\sum_{k=1}^G \pi_k = 1$.  $f_k(\bm{x}; \bm{\theta_k})$ is the probability density function of partition $k$ and $\bm{\theta_k}$ as a parameter vector for that group $k$. 
+\end{definition}
+
+
+
+\end{document}
