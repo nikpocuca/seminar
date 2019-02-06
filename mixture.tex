@@ -50,14 +50,33 @@ For the purposes of modelling size of fish, samples were taken at random where m
 
 $$f_k(x;\bm{\theta}_k) = \frac{1}{\sqrt{2\pi}\sigma}\exp\bigg(-\frac{(x - \mu_k)^2}{2\sigma_k^2} \bigg)$$
 
-where $\bm{\theta}_k = (\mu_k, \sigma_k)$.  $\mu_k \in \mathbb{R} $ is the mean size of the fish and $0 < \sigma \in \mathbb{R^+} $ is the standard deviation of fish lengths. During sampling it was noted that the small sized fish were considered to be under-sampled. Hence, for the smallest of the groups, the assumption is that of a truncation. Gaussian mixture modelling is assumed to be symmetric in univariate space. Within this symmetric assumption there are various tests for symmetry involving likelihood ratios but for now only the implementation of the model will be considered \citep{symGar}.
+where $\bm{\theta}_k = (\mu_k, \sigma_k)$.  $\mu_k \in \mathbb{R} $ is the mean size of the fish and $0 < \sigma_k \in \mathbb{R^+} $ is the standard deviation of fish lengths. During sampling it was noted that the small sized fish were considered to be under-sampled. Hence, for the smallest of the groups, the assumption is that of a truncation. Gaussian mixture modelling is assumed to be symmetric in univariate space. Within this symmetric assumption there are various tests for symmetry involving likelihood ratios but for now only the implementation of the model will be considered \citep{symGar}. Gaussian mixture modelling assumes that tail probabilities are very low and does not account for extreme values. This appropriate for the fish setting as rare do we see extremely large sized fish in nature. 
+
+
 
 \chapter{Estimation Methodology}
 \section{Maximum Likelihood Estimation} There are several ways to estimate the coefficients of a finite mixture model. The best methods are using the maximum likelihood estimation (MLE). The incomplete data Likelihood is defined as 
 
 $$L(\bm{\theta}; \bm{x}) = \prod_{i=1}^np(x_i ; \theta) = \prod_{i=1}^n\sum_{k=1}^G \pi_k f_k(x;\theta_k). $$
 
-Within the incomplete data likelihood, membership of observations are unknown, thus estimating the correct mixing proportions and the parameters of the density is difficult. 
+Within the incomplete data likelihood, membership of observations are unknown, thus estimating the correct mixing proportions and the parameters of the density is difficult as we do not know parameters $\pi_k$ for all $k$. Often we derive a latent indicator variable $Z_{ik}$ where $Z_{ik} = 1$ when observation $i$ belongs to group $k$ and $Z_{ik} = 0$ otherwise. The likelihood can be rewritten as the complete data likelihood as 
+$$ L(\bm{\theta}; \bm{x}) = \prod_{i=1}^n\prod_{k=1}^G ( f(x;\theta_k) )^{z_{ik}} . $$
+Here $z_{ik}$ is a realization of $Z_{ik}$. From this complete data likelihood representation maximization is difficult. Maximization is usually performed on the log-likelihood due to nice asymptotic properties defined as follows: 
+$$ l(\bm{\theta}; \bm{x}) = \log( \prod_{i=1}^n\prod_{k=1}^G (\pi_{k} f(x;\theta_k) )^{z_{ik}} ) = \sum_{i=1}^n \sum_{k=1}^G  z_{ik} [ log(\pi_k) + log(f(x;\theta_k))] $$
+ To find maximum likelihood estimators the expectation-maximization (EM) algorithm provides convergence very quickly \citep{demp}. 
+
+\section{Expectation Maximization Algorithm}
+
+The EM algorithm is an iterative technique which alternates between the expectation of the likelihood (E-step) and the maximization step (M-step) of the parameters in the likelihood. Convergence is discussed in \cite{demp}. The E-step is expressed by taking the expectation of the latent variable $Z_{ik}$ within the likelihood. While the M-step is  expressed by taking derivatives with respect to each parameter $\mu_k$ and $\sigma_g$.  
+\subsection{E-Step}
+The expectation step is performed by taking the expectation of the latent variable within the complete data log-likelihood. 
+Since $z_{ik}$ is a binomial variable it's expectation is a posteriori calculation with probability $f(x;\theta_k)$ of being selected. Thus the E-step is calculated as 
+
+$$\tau_{ik} =  \mathbb{E} [z_{ik} | l(\bm{\theta}; \bm{x_i})] = \frac{ \pi_k f(x_i;\theta_k)}{\sum_{g=1}^G \pi_g f(x_i;\theta_g)} $$
+
+Where $\tau_{ik}$ is the posteriori probability that observation $i$ belongs to group $k$. Now given the posteriori we wish to maximize parameters $\mu_k$, and $\sigma_k$ accordingly.
+
+
 
 
 \bibliographystyle{elsart-harv}
